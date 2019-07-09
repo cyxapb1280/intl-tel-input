@@ -42,6 +42,7 @@
         };
     }
     "use strict";
+    var _this10 = void 0;
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -79,8 +80,10 @@
         autoPlaceholder: "polite",
         // modify the parentClass
         customContainer: "",
-        // modify the auto placeholder
+        // modify the auto placeholder,
         customPlaceholder: null,
+        // use document body other then default, e.g. for iframe
+        customBody: null,
         // append menu to specified element
         dropdownContainer: null,
         // don't display these countries
@@ -161,6 +164,9 @@
                 if (this.options.separateDialCode) {
                     this.options.autoHideDialCode = this.options.nationalMode = false;
                 }
+                // we should be aware that body might be different that just document.body
+                // again e.g. body of IFrame
+                this.body = this.options.customBody ? this.options.customBody : document.body;
                 // we cannot just test screen size as some smartphones/website meta tags will report desktop
                 // resolutions
                 // Note: for some reason jasmine breaks if you put this in the main Plugin function with the
@@ -169,9 +175,9 @@
                 this.isMobile = /Android.+Mobile|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 if (this.isMobile) {
                     // trigger the mobile dropdown css
-                    document.body.classList.add("iti-mobile");
+                    this.body.classList.add("iti-mobile");
                     // on mobile, we want a full screen dropdown, so we must append it to the body
-                    if (!this.options.dropdownContainer) this.options.dropdownContainer = document.body;
+                    if (!this.options.dropdownContainer) this.options.dropdownContainer = this.body;
                 }
                 // these promises get resolved when their individual requests complete
                 // this way the dev can do something like iti.promise.then(...) to know when all requests are
@@ -692,7 +698,7 @@
                         var extraTop = !dropdownFitsBelow && dropdownFitsAbove ? 0 : this.telInput.offsetHeight;
                         // calculate placement
                         this.dropdown.style.top = "".concat(inputTop + extraTop, "px");
-                        this.dropdown.style.left = "".concat(pos.left + document.body.scrollLeft, "px");
+                        this.dropdown.style.left = "".concat(pos.left + this.body.scrollLeft, "px");
                         // close menu on window scroll
                         this._handleWindowScroll = function() {
                             return _this8._closeDropdown();
@@ -951,7 +957,7 @@
                 // and then to inject a deep clone of the selectedFlag element
                 var containerClone = this.telInput.parentNode.cloneNode();
                 containerClone.style.visibility = "hidden";
-                document.body.appendChild(containerClone);
+                this.body.appendChild(containerClone);
                 var selectedFlagClone = this.selectedFlag.cloneNode(true);
                 containerClone.appendChild(selectedFlagClone);
                 var width = selectedFlagClone.offsetWidth;
@@ -1293,7 +1299,7 @@
         script.className = "iti-load-utils";
         script.async = true;
         script.src = path;
-        document.body.appendChild(script);
+        _this10.body.appendChild(script);
     };
     // load the utils script
     window.intlTelInputGlobals.loadUtils = function(path) {
