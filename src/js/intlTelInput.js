@@ -19,8 +19,8 @@ const defaults = {
   customContainer: '',
   // modify the auto placeholder,
   customPlaceholder: null,
-  // use document body other then default, e.g. for iframe
-  customBody: null,
+  // use winodw other then default, e.g. for iframe
+  customWindow: null,
   // append menu to specified element
   dropdownContainer: null,
   // don't display these countries
@@ -111,7 +111,7 @@ class Iti {
 
     // we should be aware that body might be different that just document.body
     // again e.g. body of IFrame
-    this.body = this.options.customBody ? this.options.customBody : document.body;
+    this.body = this.options.customWindow ? this.options.customWindow.document.body : document.body;
 
     // we cannot just test screen size as some smartphones/website meta tags will report desktop
     // resolutions
@@ -972,9 +972,7 @@ class Iti {
       this.selectedDialCode.innerHTML = dialCode;
       // offsetWidth is zero if input is in a hidden container during initialisation
       // we usong 40px as default if event whole body is hidden by display none
-      const selectedFlagWidth = this.selectedFlag.offsetWidth
-        || this._getHiddenSelectedFlagWidth()
-        || 52;
+      const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
 
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
       this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
@@ -1009,6 +1007,13 @@ class Iti {
   _getHiddenSelectedFlagWidth() {
     // to get the right styling to apply, all we need is a shallow clone of the container,
     // and then to inject a deep clone of the selectedFlag element
+    const hiddenIframe = this.options.customWindow.parent;
+
+    if (hiddenIframe) {
+      hiddenIframe.style.display = 'block';
+      hiddenIframe.style.visibility = 'hidden';
+    }
+
     const containerClone = this.telInput.parentNode.cloneNode();
     containerClone.style.visibility = 'hidden';
     this.body.appendChild(containerClone);
@@ -1018,6 +1023,12 @@ class Iti {
 
     const width = selectedFlagClone.offsetWidth;
     containerClone.parentNode.removeChild(containerClone);
+
+    if (hiddenIframe) {
+      hiddenIframe.style.display = 'none';
+      hiddenIframe.style.visibility = 'visible';
+    }
+
     return width;
   }
 
