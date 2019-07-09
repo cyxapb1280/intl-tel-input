@@ -926,7 +926,7 @@
                     this.selectedDialCode.innerHTML = dialCode;
                     // offsetWidth is zero if input is in a hidden container during initialisation
                     // we usong 40px as default if event whole body is hidden by display none
-                    var selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth() || 38;
+                    var selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth() || 52;
                     // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
                     this.telInput.style.paddingLeft = "".concat(selectedFlagWidth + 6, "px");
                 }
