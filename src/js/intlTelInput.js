@@ -971,7 +971,8 @@ class Iti {
       const dialCode = (this.selectedCountryData.dialCode) ? `+${this.selectedCountryData.dialCode}` : '';
       this.selectedDialCode.innerHTML = dialCode;
       // offsetWidth is zero if input is in a hidden container during initialisation
-      const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth();
+      // we usong 40px as default if event whole body is hidden by display none
+      const selectedFlagWidth = this.selectedFlag.offsetWidth || this._getHiddenSelectedFlagWidth() || '40px';
 
       // add 6px of padding after the grey selected-dial-code box, as this is what we use in the css
       this.telInput.style.paddingLeft = `${selectedFlagWidth + 6}px`;
