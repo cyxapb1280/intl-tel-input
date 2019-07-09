@@ -1409,7 +1409,7 @@ const injectScript = (path, handleSuccess, handleFailure) => {
   script.className = 'iti-load-utils';
   script.async = true;
   script.src = path;
-  this.body.appendChild(script);
+  document.body.appendChild(script);
 };
 
 

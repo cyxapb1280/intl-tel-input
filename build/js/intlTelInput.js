@@ -38,7 +38,6 @@
             };
         }
         "use strict";
-        var _this10 = void 0;
         function _classCallCheck(instance, Constructor) {
             if (!(instance instanceof Constructor)) {
                 throw new TypeError("Cannot call a class as a function");
@@ -1296,7 +1295,7 @@
             script.className = "iti-load-utils";
             script.async = true;
             script.src = path;
-            _this10.body.appendChild(script);
+            document.body.appendChild(script);
         };
         // load the utils script
         window.intlTelInputGlobals.loadUtils = function(path) {
